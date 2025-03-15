@@ -14,7 +14,6 @@
         #selected {
             font-size: 22px;
             font-weight: bold;
-            
             position: fixed;
             top: 10px;
             left: 50%;
@@ -95,7 +94,7 @@
     </style>
 </head>
 <body>
-    <div id="selected">Selected: </div>
+    <div id="selected">Selected: None</div>
     <hr>
     <div class="container" id="cardContainer"></div>
     <br>
@@ -155,15 +154,20 @@
         }
 
         function updateSelectionDisplay() {
-    const selectedElement = document.getElementById('selected');
-    if (votes.length) {
-        selectedElement.innerHTML = `Selected:<br> ${votes.map(vote => `<div>${vote}</div>`).join('')}`;
-    } else {
-        selectedElement.innerText = 'Selected: None';
-    }
-    document.getElementById('submitBtn').disabled = votes.length !== maxVotes;
-}
+            const selectedElement = document.getElementById('selected');
+            if (votes.length) {
+                selectedElement.innerHTML = `Selected:<br> ${votes.map(vote => `<div>${vote}</div>`).join('')}`;
+            } else {
+                selectedElement.innerText = 'Selected: None';
+            }
+            document.getElementById('submitBtn').disabled = votes.length !== maxVotes;
+        }
 
+        function submitVotes() {
+            if (votes.length !== maxVotes) {
+                alert('You must select exactly 3 projects before submitting.');
+                return;
+            }
 
             if (confirm(`Are you sure you want to submit your votes?\nSelected: ${votes.join(', ')}`)) {
                 localStorage.setItem('SCILAND_FINAL', JSON.stringify(votes));
@@ -171,7 +175,7 @@
                 document.getElementById('resetBtn').style.display = 'none';
                 document.getElementById('successMessage').style.display = 'block';
             }
-        
+        }
 
         function resetVotes() {
             if (confirm('Are you sure you want to reset your votes?')) {
