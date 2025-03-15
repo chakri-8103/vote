@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Selector</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        #selected {
+            font-size: 22px;
+            font-weight: bold;
+            
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+        hr {
+            margin-top: 60px;
+            margin-bottom: 20px;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            justify-content: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 200px;
+            height: 120px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, background 0.3s;
+        }
+        .card:hover {
+            background: #ddd;
+            transform: scale(1.05);
+        }
+        .btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+        .submit-btn {
+            background-color: #28a745;
+        }
+        .submit-btn:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        .submit-btn:hover:enabled {
+            background-color: #218838;
+        }
+        .reset-btn {
+            background-color: #dc3545;
+            margin-left: 10px;
+        }
+        .reset-btn:hover {
+            background-color: #c82333;
+        }
+        #successMessage {
+            font-size: 20px;
+            font-weight: bold;
+            color: green;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="selected">Selected: </div>
+    <hr>
+    <div class="container" id="cardContainer"></div>
+    <br>
+    <button class="btn submit-btn" id="submitBtn" onclick="submitVotes()" disabled>Submit Votes</button>
+    <button class="btn reset-btn" id="resetBtn" onclick="resetVotes()">Reset Votes</button>
+    <br>
+    <div id="successMessage">Submitted Successfully!</div>
+    
+    <script>
+        let votes = JSON.parse(localStorage.getItem('SCILAND')) || [];
+        const maxVotes = 3;
+        let projects = [];
+
+        fetch('hey.txt')
+            .then(response => response.text())
+            .then(text => {
+                projects = text.split('\n').filter(p => p.trim() !== '');
+                renderCards();
+            })
+            .catch(err => console.error('Error loading projects:', err));
+
+        function renderCards() {
+            let container = document.getElementById('cardContainer');
+            container.innerHTML = '';
+            projects.forEach((project, index) => {
+                let card = document.createElement('div');
+                card.className = 'card';
+                let placeholder = document.createElement('div');
+                placeholder.innerText = `S${index + 1}`;
+                let projectName = document.createElement('div');
+                projectName.innerText = votes.includes(project) ? project : '';
+
+                card.dataset.project = project;
+                card.dataset.placeholder = `S${index + 1}`;
+
+                card.onclick = () => selectProject(card, project, projectName);
+                
+                card.appendChild(placeholder);
+                card.appendChild(projectName);
+                container.appendChild(card);
+            });
+            updateSelectionDisplay();
+        }
+
+        function selectProject(card, project, projectName) {
+            if (votes.length < maxVotes && !votes.includes(project)) {
+                votes.push(project);
+                localStorage.setItem('SCILAND', JSON.stringify(votes));
+                projectName.innerText = project;
+                updateSelectionDisplay();
+                alert(`You voted for: ${project}`);
+            } else if (votes.includes(project)) {
+                alert('You already voted for this project!');
+            } else {
+                alert('You can only vote for 3 projects!');
+            }
+        }
+
+        function updateSelectionDisplay() {
+    const selectedElement = document.getElementById('selected');
+    if (votes.length) {
+        selectedElement.innerHTML = `Selected:<br> ${votes.map(vote => `<div>${vote}</div>`).join('')}`;
+    } else {
+        selectedElement.innerText = 'Selected: None';
+    }
+    document.getElementById('submitBtn').disabled = votes.length !== maxVotes;
+}
+
+
+            if (confirm(`Are you sure you want to submit your votes?\nSelected: ${votes.join(', ')}`)) {
+                localStorage.setItem('SCILAND_FINAL', JSON.stringify(votes));
+                document.getElementById('submitBtn').style.display = 'none';
+                document.getElementById('resetBtn').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'block';
+            }
+        
+
+        function resetVotes() {
+            if (confirm('Are you sure you want to reset your votes?')) {
+                localStorage.removeItem('SCILAND');
+                votes = [];
+                renderCards();
+            }
+        }
+    </script>
+</body>
+</html>

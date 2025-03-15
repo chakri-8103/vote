@@ -1,0 +1,9 @@
+Atm machine 
+MULTI TIC TAC TOE 
+ shopping platform
+FAKE NEWS DETECTION SYSTEM 
+Call log assistant 
+Spending Partner
+Bus  ticket reservation 
+Hotel booking chatbot by aws services
+Offlinechatbot
