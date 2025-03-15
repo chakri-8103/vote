@@ -107,7 +107,7 @@
         let votes = JSON.parse(localStorage.getItem('SCILAND')) || [];
         const maxVotes = 3;
         let projects = [];
-
+    
         fetch('hey.txt')
             .then(response => response.text())
             .then(text => {
@@ -115,7 +115,7 @@
                 renderCards();
             })
             .catch(err => console.error('Error loading projects:', err));
-
+    
         function renderCards() {
             let container = document.getElementById('cardContainer');
             container.innerHTML = '';
@@ -126,10 +126,10 @@
                 placeholder.innerText = `S${index + 1}`;
                 let projectName = document.createElement('div');
                 projectName.innerText = votes.includes(project) ? project : '';
-
+    
                 card.dataset.project = project;
                 card.dataset.placeholder = `S${index + 1}`;
-
+    
                 card.onclick = () => selectProject(card, project, projectName);
                 
                 card.appendChild(placeholder);
@@ -138,7 +138,7 @@
             });
             updateSelectionDisplay();
         }
-
+    
         function selectProject(card, project, projectName) {
             if (votes.length < maxVotes && !votes.includes(project)) {
                 votes.push(project);
@@ -152,7 +152,7 @@
                 alert('You can only vote for 3 projects!');
             }
         }
-
+    
         function updateSelectionDisplay() {
             const selectedElement = document.getElementById('selected');
             if (votes.length) {
@@ -162,21 +162,23 @@
             }
             document.getElementById('submitBtn').disabled = votes.length !== maxVotes;
         }
-
+    
         function submitVotes() {
             if (votes.length !== maxVotes) {
                 alert('You must select exactly 3 projects before submitting.');
                 return;
             }
-
+    
             if (confirm(`Are you sure you want to submit your votes?\nSelected: ${votes.join(', ')}`)) {
                 localStorage.setItem('SCILAND_FINAL', JSON.stringify(votes));
+                localStorage.setItem('SCILAND_SUBMITTED', 'true'); // 🔥 Prevent re-voting
+    
                 document.getElementById('submitBtn').style.display = 'none';
                 document.getElementById('resetBtn').style.display = 'none';
                 document.getElementById('successMessage').style.display = 'block';
             }
         }
-
+    
         function resetVotes() {
             if (confirm('Are you sure you want to reset your votes?')) {
                 localStorage.removeItem('SCILAND');
@@ -184,6 +186,16 @@
                 renderCards();
             }
         }
+    
+        // 🔥 Prevent reset button & voting after submission
+        window.onload = function () {
+            if (localStorage.getItem('SCILAND_SUBMITTED') === 'true') {
+                document.getElementById('submitBtn').style.display = 'none';
+                document.getElementById('resetBtn').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'block';
+            }
+        };
     </script>
+    
 </body>
 </html>
