@@ -625,43 +625,53 @@ input.error {
 
         // Handle vote submission
         function submitVotes() {
-            if (votes.length !== maxVotes) {
-                showToast(`You must select exactly ${maxVotes} projects before submitting.`, 'error');
-                return;
+    if (votes.length !== maxVotes) {
+        showToast(`You must select exactly ${maxVotes} projects before submitting.`, 'error');
+        return;
+    }
+
+    const name = document.getElementById('name').value.trim();
+    const mobile = document.getElementById('mobile').value.trim();
+    const college = document.getElementById('college').value.trim();
+    const location = document.getElementById('location').value.trim();
+
+    // Google Forms URL (Replace with your actual Form URL)
+    let googleFormURL = "https://docs.google.com/forms/d/e/1FAIpQLSf0e2XdLe_6CW-XclDoCZnE-CqynlUEmIOF8I9A1vNMFCV3ew/formResponse";
+
+    // Google Forms Entry IDs (Replace with actual entry IDs)
+    let formData = new URLSearchParams();
+    formData.append("entry.878333554", name);     // Name Entry ID
+    formData.append("entry.556246234", mobile);   // Mobile Entry ID
+    formData.append("entry.839035328", college);  // College Entry ID
+    formData.append("entry.1117594115", location); // Location Entry ID
+    formData.append("entry.727771072", votes[0]); // Vote 1 Entry ID
+    formData.append("entry.64360297", votes[1]); // Vote 2 Entry ID
+    formData.append("entry.1639194016", votes[2]); // Vote 3 Entry ID
+
+    // Submit data to Google Forms
+    fetch(googleFormURL, {
+        method: "POST",
+        mode: "no-cors",
+        body: formData
+    }).then(() => {
+        document.getElementById('submitBtn').style.display = 'none';
+        document.getElementById('successMessage').style.display = 'block';
+        showToast("Your vote has been submitted successfully!", 'success');
+
+        // Show an alert box and reload the page on OK click
+        setTimeout(() => {
+            let confirmReload = confirm("Your vote has been submitted successfully!.");
+            if (confirmReload) {
+                window.location.reload();  // Use window.location.reload() to force reload
             }
+        }, 500);
+    }).catch(err => {
+        console.error("Submission failed", err);
+        showToast("Error submitting data. Please try again.", 'error');
+    });
+}
 
-            const name = document.getElementById('name').value.trim();
-            const mobile = document.getElementById('mobile').value.trim();
-            const college = document.getElementById('college').value.trim();
-            const location = document.getElementById('location').value.trim();
 
-            // Google Forms URL (Replace with your actual Form URL)
-            let googleFormURL = "https://docs.google.com/forms/d/e/1FAIpQLSf0e2XdLe_6CW-XclDoCZnE-CqynlUEmIOF8I9A1vNMFCV3ew/formResponse";
-
-            // Google Forms Entry IDs (Replace with actual entry IDs)
-            let formData = new URLSearchParams();
-            formData.append("entry.878333554", name);     // Name Entry ID
-            formData.append("entry.556246234", mobile);   // Mobile Entry ID
-            formData.append("entry.839035328", college);  // College Entry ID
-            formData.append("entry.1117594115", location); // Location Entry ID
-            formData.append("entry.727771072", votes[0]); // Vote 1 Entry ID
-            formData.append("entry.64360297", votes[1]); // Vote 2 Entry ID
-            formData.append("entry.1639194016", votes[2]); // Vote 3 Entry ID
-
-            // Submit data to Google Forms
-            fetch(googleFormURL, {
-                method: "POST",
-                mode: "no-cors",
-                body: formData
-            }).then(() => {
-                document.getElementById('submitBtn').style.display = 'none';
-                document.getElementById('successMessage').style.display = 'block';
-                showToast("Your vote has been submitted successfully!", 'success');
-            }).catch(err => {
-                console.error("Submission failed", err);
-                showToast("Error submitting data. Please try again.", 'error');
-            });
-        }
 
         // Add input validation on input events
         document.getElementById('name').addEventListener('input', function() {
