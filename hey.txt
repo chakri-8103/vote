@@ -1,9 +1,11 @@
-Atm machine 
-MULTI TIC TAC TOE 
- shopping platform
-FAKE NEWS DETECTION SYSTEM 
-Call log assistant 
-Spending Partner
-Bus  ticket reservation 
-Hotel booking chatbot by aws services
-Offlinechatbot
+ATM machine
+LAptop controller With Smartphone
+ATM Generator
+PC REMOTE BETA
+remote data
+API
+WEB DEVELOPMENT
+PYTHON
+Call
+C
+etc
