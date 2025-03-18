@@ -389,7 +389,7 @@ input.error {
         
         <div class="submit-container">
             <button class="btn submit-btn" id="submitBtn" onclick="submitVotes()" disabled>Submit Your Votes</button>
-            <div id="successMessage">Your votes have been submitted successfully!</div>
+            <div id="successMessage"> </div>
         </div>
     </div>
 
@@ -658,11 +658,11 @@ input.error {
         document.getElementById('successMessage').style.display = 'block';
         showToast("Your vote has been submitted successfully!", 'success');
 
-        // Show an alert box and reload the page on OK click
+        
         setTimeout(() => {
             let confirmReload = confirm("Your vote has been submitted successfully!.");
             if (confirmReload) {
-                window.location.reload();  // Use window.location.reload() to force reload
+                window.location.reload();  
             }
         }, 500);
     }).catch(err => {
