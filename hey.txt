@@ -1,11 +1,140 @@
-ATM machine
-LAptop controller With Smartphone
-ATM Generator
-PC REMOTE BETA
-remote data
-API
-WEB DEVELOPMENT
-PYTHON
-Call
-C
-etc
+Ai mock interviewer  
+Ai voice assistant  
+ATS FRIENDLY RESUMES  
+Beauty Bliss  
+Book Recommendation System  
+Car price prediction  
+Customer support & FAQ Chatbot for Aditya Degree College  
+Diet recommendation  
+Electric car data analysis  
+Escape Room  
+Facial Recognition age and gender detection  
+Fire detection  
+Image steganography  
+Mega Mart  
+Med fusion (multiple disease prediction)  
+Netflix database using Tableau  
+plant disease prediction  
+Pyshooter  
+REVIEW SCRAPING  
+Robo hand  
+Spotify track database  
+Student Mental Health prediction system  
+Youtube Video Summarizer based on Chrome extension
+
+
+
+Automatic Car Parking Tollgate  
+Automatic Clothes Preventor from Rain  
+Automatic Door Open System  
+Automatic Plant Watering System  
+Automatic Pressure Cooker Whistle Counter and Turn Off  
+Door Lock System  
+Footsteps Power Generation  
+IoT Car Parking  
+Laser Home Security  
+LPG Gas Detector  
+Smart Railway Platform  
+Solar-Based Wireless Power Transfer on Road for EV  
+Stair Gauge  
+Train Accident Prevention  
+
+
+
+Chat Bot Gemini  
+hydrosafe vapour  
+Interest hub  
+Live sketch  
+parental control  
+Password Generator  
+Previous Paper  
+Spark Bot  
+WHATSAPP BOT  
+
+
+
+AI Powered Global Trade Analytics Platform  
+Business Guider  
+Business Planning and Operations  
+Course Promotions  
+Digital Marketing Strategies  
+E-Commerce Platform  
+Monetary Fraud Vault  
+MSME  
+Online Stock Investment and Trading  
+Smart Commerce in Modern World  
+Union Budget  
+WTO  
+
+
+
+
+Cultivation of mushroom  
+Extraction of biogas from cow dung  
+Fermentation of bioethanol from rice straw  
+Genetic Engineering  
+Integrated farming  
+Spirullina - the green gold of future  
+Sustainable aquaculture with RAS  
+Working model of neuron  
+
+
+
+Biodiesel  
+Paddy Husk Ash Detergent  
+Alcohol from Potato and Agricultural Waste  
+Latent Fingerprinting Detection  
+Chemistry in Perfumes  
+Herbal Tobacco  
+Forensic Chemistry  
+Extraction of Natural Toothpaste  
+Green Plastic  
+Rainbow Fire  
+Nerolin  
+Extraction of Caffeine from Tea Dust  
+Analysis of Cold Drinks  
+
+
+
+
+Analysis of space and aeronautics  
+Are You Ready for robotics  
+Banking vs Netbanking  
+Business forecasting  
+Caffeine Consumption Trends in INDIA  
+Casino Game  
+CENSUS OF INDIA  
+Freelancing  
+Income Tax  
+Scope of statistics  
+Survey of agriculture statistics  
+
+
+
+
+ATM Machine Using Java  
+Book a Hotel Chatbot  
+Bus Reservation System  
+Call Log Assistant  
+Fake News Detection System  
+Magic Square  
+Multi Tic Tac Toe  
+Offline Chatbot  
+Online Shopping  
+Park N Book  
+Spending Partner  
+
+
+
+AUTOMATIC STREET LIGHT  
+AUTOMATIC TOLL GATE  
+BLACK HOLE  
+CARBON PURIFICATION FOR INDUSTRIES  
+CYMENTICS 2.O  
+HYDRAULIC PLANE LAUNCHER  
+MOBIUS STRIP BY USING 3D HOLOGRAM  
+POWER TRANSMISSION SYSTEM  
+PRODUCING ELECTRICITY FROM HEAT  
+RADAR DETECTOR  
+RUBY LASER  
+SOLAR BOAT
