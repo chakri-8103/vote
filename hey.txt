@@ -140,3 +140,6 @@ PRODUCING ELECTRICITY FROM HEAT
 RADAR DETECTOR  
 RUBY LASER  
 SOLAR BOAT
+
+Digital Lock Door System
+Movie Recommendation System
