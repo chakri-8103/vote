@@ -159,3 +159,6 @@ Make my Theatre
 Try to Touch Me
 Tambola
 Suduko
+
+Authentify
+Qr Code Generator
