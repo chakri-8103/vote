@@ -62,7 +62,7 @@ Cultivation of mushroom
 Extraction of biogas from cow dung  
 Fermentation of bioethanol from rice straw  
 Genetic Engineering  
-Integrated farming  
+3C technologies
 Spirullina - the green gold of future  
 Sustainable aquaculture with RAS  
 Working model of neuron  
@@ -85,7 +85,7 @@ WTO
 Alcohol from Potato and Agricultural Waste  
 Analysis of Cold Drinks  
 Biodiesel  
-Chemistry in Perfumes  
+Essential oils in Perfume Chemistry
 Extraction of Caffeine from Tea Dust  
 Extraction of Natural Toothpaste  
 Forensic Chemistry  
@@ -141,5 +141,21 @@ RADAR DETECTOR
 RUBY LASER  
 SOLAR BOAT
 
-Digital Lock Door System
+Automatic door lock system
 Movie Recommendation System
+Project-k
+random number guessing number
+Tesla coil
+health benefits of fish
+Artificial incubator
+vertical farming
+blood group analysis
+BMI
+hemoglobin Test
+
+
+Dare to Hit Me
+Make my Theatre
+Try to Touch Me
+Tambola
+Suduko
