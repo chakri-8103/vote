@@ -1,0 +1,357 @@
+const correctPassword = "@@";
+        const passwordLock = document.getElementById('passwordLock');
+        const mainContent = document.getElementById('mainContent'); 
+        const passwordInput = document.getElementById('passwordInput');
+        const passwordError = document.getElementById('passwordError');
+
+
+        const isAuthenticated = sessionStorage.getItem('authenticated') === 'true';
+
+        function checkPassword() {
+            const enteredPassword = passwordInput.value.trim();
+
+            if (enteredPassword === correctPassword) {
+
+                passwordLock.style.display = 'none';
+                mainContent.style.display = 'block';
+
+
+                sessionStorage.setItem('authenticated', 'true');
+            } else {
+
+                passwordError.style.display = 'block';
+            }
+        }
+
+
+        passwordInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+
+        window.onload = function () {
+            if (isAuthenticated) {
+
+                passwordLock.style.display = 'none';
+                mainContent.style.display = 'block';
+            } else {
+
+                passwordLock.style.display = 'flex';
+            }
+        };
+
+
+        let votes = [];
+        const maxVotes = 3;
+        let projects = [];
+
+
+        fetch('hey.txt')
+            .then(response => response.text())
+            .then(text => {
+                projects = text.split('\n').filter(p => p.trim() !== '');
+
+                if (projects.length > 0 && document.getElementById('votingSection').style.display !== 'none') {
+                    renderCards();
+                }
+            })
+            .catch(err => {
+                console.error('Error loading projects:', err);
+
+                projects = Array.from({ length: 200 }, (_, i) => `Project ${i + 1}`);
+                console.log('Using fallback project list');
+            });
+
+
+        function showToast(message, type = 'error') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = message;
+            container.appendChild(toast);
+
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => {
+                    container.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+
+
+        function validateInput() {
+            let isValid = true;
+
+
+            const name = document.getElementById('name').value.trim();
+            const namePattern = /^[A-Za-z\s]+$/;
+            if (!namePattern.test(name)) {
+                document.getElementById('name').classList.add('error');
+                document.getElementById('nameError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('name').classList.remove('error');
+                document.getElementById('nameError').style.display = 'none';
+            }
+
+            const mobile = document.getElementById('mobile').value.trim();
+            const mobilePattern = /^[0-9]{10}$/;
+            if (!mobilePattern.test(mobile)) {
+                document.getElementById('mobile').classList.add('error');
+                document.getElementById('mobileError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('mobile').classList.remove('error');
+                document.getElementById('mobileError').style.display = 'none';
+            }
+
+            const college = document.getElementById('college').value.trim();
+            const collegePattern = /^[A-Za-z0-9\s]+$/;
+            if (!collegePattern.test(college)) {
+                document.getElementById('college').classList.add('error');
+                document.getElementById('collegeError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('college').classList.remove('error');
+                document.getElementById('collegeError').style.display = 'none';
+            }
+
+
+            const location = document.getElementById('location').value.trim();
+            if (!collegePattern.test(location)) {
+                document.getElementById('location').classList.add('error');
+                document.getElementById('locationError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('location').classList.remove('error');
+                document.getElementById('locationError').style.display = 'none';
+            }
+
+            return isValid;
+        }
+
+        function nextStep() {
+            if (validateInput()) {
+
+                document.getElementById('formContainer').style.display = 'none';
+                document.getElementById('votingSection').style.display = 'block';
+
+
+                if (projects.length > 0) {
+                    renderCards();
+                } else {
+                    showToast('Loading projects, please wait...', 'info');
+                }
+            }
+        }
+
+
+        function getPriorityText(index) {
+            const priorities = ['1st', '2nd', '3rd'];
+            return priorities[index] || '';
+        }
+
+
+        function renderCards() {
+            let container = document.getElementById('cardContainer');
+            container.innerHTML = '';
+
+            projects.forEach((project, index) => {
+                let card = document.createElement('div');
+                card.className = 'card';
+
+
+                if (index === 0) {
+                    card.classList.add('first-card');
+                }
+
+                let voteIndex = votes.indexOf(project);
+                if (voteIndex !== -1) {
+                    card.classList.add('selected');
+                    card.setAttribute('data-priority', getPriorityText(voteIndex));
+                }
+
+                let placeholder = document.createElement('div');
+                placeholder.className = 'card-placeholder';
+                placeholder.innerText = `S${index + 1}`;
+
+                let projectName = document.createElement('div');
+                projectName.className = 'card-project';
+                projectName.innerText = project;
+
+                card.dataset.project = project;
+                card.onclick = () => selectProject(card, project);
+
+                card.appendChild(placeholder);
+                card.appendChild(projectName);
+                container.appendChild(card);
+            });
+
+            updateSelectionDisplay();
+        }
+
+        function selectProject(card, project) {
+            const isSelected = votes.includes(project);
+
+            if (isSelected) {
+                votes = votes.filter(vote => vote !== project);
+                card.classList.remove('selected');
+                card.removeAttribute('data-priority');
+                showToast(`Removed "${project}" from your selection`, 'info');
+            } else if (votes.length < maxVotes) {
+                votes.push(project);
+                card.classList.add('selected');
+                card.setAttribute('data-priority', getPriorityText(votes.length - 1));
+                showToast(`Added "${project}" as your ${getPriorityText(votes.length - 1)} priority`, 'success');
+            } else {
+                showToast(`You can only select ${maxVotes} projects. Deselect one to change your selection.`, 'error');
+                return;
+            }
+            updateCardPriorities();
+            updateSelectionDisplay();
+        }
+
+        function updateCardPriorities() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                const project = card.dataset.project;
+                const voteIndex = votes.indexOf(project);
+
+                if (voteIndex !== -1) {
+                    card.setAttribute('data-priority', getPriorityText(voteIndex));
+                } else {
+                    card.removeAttribute('data-priority');
+                }
+            });
+        }
+
+
+        function updateSelectionDisplay() {
+            const banner = document.getElementById('selectionBanner');
+            const counter = document.getElementById('voteCounter');
+
+
+            counter.innerText = `Selected ${votes.length} of ${maxVotes} projects`;
+
+
+            banner.innerHTML = '';
+
+            if (votes.length > 0) {
+                votes.forEach((vote, index) => {
+                    const pill = document.createElement('div');
+                    pill.className = 'selection-pill';
+
+                    const badge = document.createElement('div');
+                    badge.className = 'priority-badge';
+                    badge.innerText = getPriorityText(index);
+
+                    pill.appendChild(badge);
+                    pill.appendChild(document.createTextNode(vote));
+                    banner.appendChild(pill);
+                });
+            }
+
+            document.getElementById('submitBtn').disabled = votes.length !== maxVotes;
+        }
+
+        function submitVotes() {
+            if (votes.length !== maxVotes) {
+                showToast(`You must select exactly ${maxVotes} projects before submitting.`, 'error');
+                return;
+            }
+
+
+            const isConfirmed = confirm("Are you sure you want to submit your votes?");
+            if (!isConfirmed) {
+
+                showToast("Submission cancelled. You can continue voting.", 'info');
+                return;
+            }
+
+            const name = document.getElementById('name').value.trim();
+            const mobile = document.getElementById('mobile').value.trim();
+            const college = document.getElementById('college').value.trim();
+            const location = document.getElementById('location').value.trim();
+
+
+            let googleFormURL = "https://docs.google.com/forms/d/e/1FAIpQLSf0e2XdLe_6CW-XclDoCZnE-CqynlUEmIOF8I9A1vNMFCV3ew/formResponse";
+
+            let formData = new URLSearchParams();
+            formData.append("entry.878333554", name);     
+            formData.append("entry.556246234", mobile);   
+            formData.append("entry.839035328", college);  
+            formData.append("entry.1117594115", location);
+            formData.append("entry.727771072", votes[0]); 
+            formData.append("entry.64360297", votes[1]); 
+            formData.append("entry.1639194016", votes[2]); 
+
+
+            fetch(googleFormURL, {
+                method: "POST",
+                mode: "no-cors",
+                body: formData
+            }).then(() => {
+                document.getElementById('submitBtn').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'block';
+                showToast("Your vote has been submitted successfully!", 'success');
+
+                setTimeout(() => {
+                    let confirmReload = confirm("Your vote has been submitted successfully! Thank You.");
+                    if (confirmReload) {
+                        window.location.reload();
+                    }
+                }, 500);
+            }).catch(err => {
+                console.error("Submission failed", err);
+                showToast("Error submitting data. Please try again.", 'error');
+            });
+        }
+
+        document.getElementById('name').addEventListener('input', function () {
+            const namePattern = /^[A-Za-z\s]+$/;
+            if (!namePattern.test(this.value.trim()) && this.value.trim() !== '') {
+                this.classList.add('error');
+                document.getElementById('nameError').style.display = 'block';
+            } else {
+                this.classList.remove('error');
+                document.getElementById('nameError').style.display = 'none';
+            }
+        });
+
+        document.getElementById('mobile').addEventListener('input', function () {
+            const mobilePattern = /^[0-9]{10}$/;
+            if (!mobilePattern.test(this.value.trim()) && this.value.trim() !== '') {
+                this.classList.add('error');
+                document.getElementById('mobileError').style.display = 'block';
+            } else {
+                this.classList.remove('error');
+                document.getElementById('mobileError').style.display = 'none';
+            }
+        });
+
+        document.getElementById('college').addEventListener('input', function () {
+            const collegePattern = /^[A-Za-z0-9\s]+$/;
+            if (!collegePattern.test(this.value.trim()) && this.value.trim() !== '') {
+                this.classList.add('error');
+                document.getElementById('collegeError').style.display = 'block';
+            } else {
+                this.classList.remove('error');
+                document.getElementById('collegeError').style.display = 'none';
+            }
+        });
+
+        document.getElementById('location').addEventListener('input', function () {
+            const locationPattern = /^[A-Za-z0-9\s]+$/;
+            if (!locationPattern.test(this.value.trim()) && this.value.trim() !== '') {
+                this.classList.add('error');
+                document.getElementById('locationError').style.display = 'block';
+            } else {
+                this.classList.remove('error');
+                document.getElementById('locationError').style.display = 'none';
+            }
+        });
+
+        Working With values

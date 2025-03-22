@@ -423,6 +423,34 @@
             margin-top: 10px;
             display: none;
         }
+
+        /* Add this to your existing CSS */
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--radius);
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            transition: all 0.3s;
+            appearance: none;
+            /* Remove default arrow */
+            background-color: white;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%234361ee%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 12px;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        select.error {
+            border-color: var(--danger);
+        }
     </style>
 </head>
 
@@ -448,7 +476,7 @@
                 <input type="text" id="mobile" placeholder="Mobile No" required>
                 <div class="error-message" id="mobileError">Mobile number must be exactly 10 digits.</div>
             </div>
-            <div class="input-group">
+            <!-- <div class="input-group">
                 <input type="text" id="college" placeholder="College Name" required>
                 <div class="error-message" id="collegeError">College name should contain only alphabets, numbers, and
                     spaces.</div>
@@ -458,7 +486,31 @@
                 <div class="error-message" id="locationError">Location should contain only alphabets, numbers, and
                     spaces.
                 </div>
+            </div> -->
+
+            <div class="input-group">
+                <select id="college" required>
+                    <option value="" disabled selected>Select Option</option>
+                    <option value="College A">STAFF</option>
+                    <option value="College B">PARENT</option>
+                    <option value="College C">ADC Student</option>
+                    <option value="College C">AJC Student</option>
+                    <option value="College C">Other</option>
+                    <!-- Add more options as needed -->
+                </select>
+                <div class="error-message" id="collegeError">Please select a college name.</div>
             </div>
+            <div class="input-group">
+                <select id="location" required>
+                    <option value="" disabled selected>Select College Location</option>
+                    <option value="Location X">KKD</option>
+                    <option value="Location Y">Others</option>
+                    <!-- Add more options as needed -->
+                </select>
+                <div class="error-message" id="locationError">Please select a college location.</div>
+            </div>
+
+
             <button class="btn next-btn" onclick="nextStep()">Next</button>
         </div>
 
@@ -495,7 +547,7 @@
             alert("Right-click is disabled!");
         });
 
-        // Disable F12, Ctrl+Shift+I, Ctrl+U, etc.
+
         document.addEventListener('keydown', function (e) {
             // Disable F12
             if (e.key === 'F12' || e.keyCode === 123) {
@@ -527,76 +579,67 @@
                 alert("Ctrl+Shift+C is disabled!");
             }
         });
-
-        // Password Configuration
+        // Password Configuration (unchanged)
         const correctPassword = "@@"; // Set your password here
         const passwordLock = document.getElementById('passwordLock');
-        const mainContent = document.getElementById('mainContent'); // Wrap your main content in a div with id="mainContent"
+        const mainContent = document.getElementById('mainContent');
         const passwordInput = document.getElementById('passwordInput');
         const passwordError = document.getElementById('passwordError');
 
         // Check if the user is authenticated in the current session
         const isAuthenticated = sessionStorage.getItem('authenticated') === 'true';
 
-        // Function to check password
+        // Function to check password (unchanged)
         function checkPassword() {
             const enteredPassword = passwordInput.value.trim();
 
             if (enteredPassword === correctPassword) {
-                // Hide password lock screen and show main content
                 passwordLock.style.display = 'none';
                 mainContent.style.display = 'block';
-
-                // Store authentication state in sessionStorage
                 sessionStorage.setItem('authenticated', 'true');
             } else {
-                // Show error message
                 passwordError.style.display = 'block';
             }
         }
 
-        // Add event listener for Enter key in password input
+        // Add event listener for Enter key in password input (unchanged)
         passwordInput.addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 checkPassword();
             }
         });
 
-        // Check authentication state on page load
+        // Check authentication state on page load (unchanged)
         window.onload = function () {
             if (isAuthenticated) {
-                // If authenticated, hide the password lock screen and show the main content
                 passwordLock.style.display = 'none';
                 mainContent.style.display = 'block';
             } else {
-                // If not authenticated, show the password lock screen
                 passwordLock.style.display = 'flex';
             }
         };
 
-        // Your existing JavaScript code goes here
-        let votes = []; // Array to store selected projects
-        const maxVotes = 3; // Maximum number of votes allowed
-        let projects = []; // Array to store projects loaded from the file
+        // Voting logic (unchanged)
+        let votes = [];
+        const maxVotes = 3;
+        let projects = [];
 
-        // Fetch projects from the file
+        // Fetch projects from the file (unchanged)
         fetch('hey.txt')
             .then(response => response.text())
             .then(text => {
-                projects = text.split('\n').filter(p => p.trim() !== ''); // Load projects and remove empty lines
-                // If we have projects and are in voting section, render them
+                projects = text.split('\n').filter(p => p.trim() !== '');
                 if (projects.length > 0 && document.getElementById('votingSection').style.display !== 'none') {
                     renderCards();
                 }
             })
             .catch(err => {
                 console.error('Error loading projects:', err);
-                // Fallback projects for testing
                 projects = Array.from({ length: 200 }, (_, i) => `Project ${i + 1}`);
                 console.log('Using fallback project list');
             });
 
-        // Function to show toast notification
+        // Function to show toast notification (unchanged)
         function showToast(message, type = 'error') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -604,7 +647,6 @@
             toast.innerHTML = message;
             container.appendChild(toast);
 
-            // Remove toast after 3 seconds
             setTimeout(() => {
                 toast.style.opacity = '0';
                 setTimeout(() => {
@@ -613,11 +655,11 @@
             }, 3000);
         }
 
-        // Input validation functions
+        // Input validation functions (updated for dropdowns)
         function validateInput() {
             let isValid = true;
 
-            // Validate name
+            // Validate name (unchanged)
             const name = document.getElementById('name').value.trim();
             const namePattern = /^[A-Za-z\s]+$/;
             if (!namePattern.test(name)) {
@@ -629,7 +671,7 @@
                 document.getElementById('nameError').style.display = 'none';
             }
 
-            // Validate mobile
+            // Validate mobile (unchanged)
             const mobile = document.getElementById('mobile').value.trim();
             const mobilePattern = /^[0-9]{10}$/;
             if (!mobilePattern.test(mobile)) {
@@ -641,10 +683,9 @@
                 document.getElementById('mobileError').style.display = 'none';
             }
 
-            // Validate college
-            const college = document.getElementById('college').value.trim();
-            const collegePattern = /^[A-Za-z0-9\s]+$/;
-            if (!collegePattern.test(college)) {
+            // Validate college (dropdown)
+            const college = document.getElementById('college').value;
+            if (!college) {
                 document.getElementById('college').classList.add('error');
                 document.getElementById('collegeError').style.display = 'block';
                 isValid = false;
@@ -653,9 +694,9 @@
                 document.getElementById('collegeError').style.display = 'none';
             }
 
-            // Validate location
-            const location = document.getElementById('location').value.trim();
-            if (!collegePattern.test(location)) {
+            // Validate location (dropdown)
+            const location = document.getElementById('location').value;
+            if (!location) {
                 document.getElementById('location').classList.add('error');
                 document.getElementById('locationError').style.display = 'block';
                 isValid = false;
@@ -667,14 +708,12 @@
             return isValid;
         }
 
-        // Function to handle the "Next" button click
+        // Function to handle the "Next" button click (unchanged)
         function nextStep() {
             if (validateInput()) {
-                // Hide the form and show the voting section
                 document.getElementById('formContainer').style.display = 'none';
                 document.getElementById('votingSection').style.display = 'block';
 
-                // If projects are loaded, render the cards
                 if (projects.length > 0) {
                     renderCards();
                 } else {
@@ -683,22 +722,21 @@
             }
         }
 
-        // Get priority text based on position
+        // Get priority text based on position (unchanged)
         function getPriorityText(index) {
             const priorities = ['1st', '2nd', '3rd'];
             return priorities[index] || '';
         }
 
-        // Render project cards
+        // Render project cards (unchanged)
         function renderCards() {
             let container = document.getElementById('cardContainer');
-            container.innerHTML = ''; // Clear the container
+            container.innerHTML = '';
 
             projects.forEach((project, index) => {
                 let card = document.createElement('div');
                 card.className = 'card';
 
-                // Make first card larger
                 if (index === 0) {
                     card.classList.add('first-card');
                 }
@@ -728,34 +766,30 @@
             updateSelectionDisplay();
         }
 
-        // Handle project selection
+        // Handle project selection (unchanged)
         function selectProject(card, project) {
             const isSelected = votes.includes(project);
 
             if (isSelected) {
-                // If already selected, remove it
                 votes = votes.filter(vote => vote !== project);
                 card.classList.remove('selected');
                 card.removeAttribute('data-priority');
                 showToast(`Removed "${project}" from your selection`, 'info');
             } else if (votes.length < maxVotes) {
-                // If not already selected and under max votes, add it
                 votes.push(project);
                 card.classList.add('selected');
                 card.setAttribute('data-priority', getPriorityText(votes.length - 1));
                 showToast(`Added "${project}" as your ${getPriorityText(votes.length - 1)} priority`, 'success');
             } else {
-                // If max votes reached
                 showToast(`You can only select ${maxVotes} projects. Deselect one to change your selection.`, 'error');
                 return;
             }
 
-            // Update all cards to refresh priority markers
             updateCardPriorities();
             updateSelectionDisplay();
         }
 
-        // Update priority markers on all cards
+        // Update priority markers on all cards (unchanged)
         function updateCardPriorities() {
             const cards = document.querySelectorAll('.card');
             cards.forEach(card => {
@@ -770,15 +804,12 @@
             });
         }
 
-        // Update the selected projects display
+        // Update the selected projects display (unchanged)
         function updateSelectionDisplay() {
             const banner = document.getElementById('selectionBanner');
             const counter = document.getElementById('voteCounter');
 
-            // Update the counter
             counter.innerText = `Selected ${votes.length} of ${maxVotes} projects`;
-
-            // Update the selection banner
             banner.innerHTML = '';
 
             if (votes.length > 0) {
@@ -796,44 +827,40 @@
                 });
             }
 
-            // Enable/disable submit button
             document.getElementById('submitBtn').disabled = votes.length !== maxVotes;
         }
 
-        // Handle vote submission
+        // Handle vote submission (updated for dropdowns)
         function submitVotes() {
             if (votes.length !== maxVotes) {
                 showToast(`You must select exactly ${maxVotes} projects before submitting.`, 'error');
                 return;
             }
 
-            // Show confirmation dialog
             const isConfirmed = confirm("Are you sure you want to submit your votes?");
             if (!isConfirmed) {
-                // If user clicks "Cancel", do not proceed with submission
                 showToast("Submission cancelled. You can continue voting.", 'info');
                 return;
             }
 
             const name = document.getElementById('name').value.trim();
             const mobile = document.getElementById('mobile').value.trim();
-            const college = document.getElementById('college').value.trim();
-            const location = document.getElementById('location').value.trim();
+            const college = document.getElementById('college').value; // Dropdown value
+            const location = document.getElementById('location').value; // Dropdown value
 
             // Google Forms URL (Replace with your actual Form URL)
             let googleFormURL = "https://docs.google.com/forms/d/e/1FAIpQLSf0e2XdLe_6CW-XclDoCZnE-CqynlUEmIOF8I9A1vNMFCV3ew/formResponse";
 
             // Google Forms Entry IDs (Replace with actual entry IDs)
             let formData = new URLSearchParams();
-            formData.append("entry.878333554", name);     // Name Entry ID
-            formData.append("entry.556246234", mobile);   // Mobile Entry ID
-            formData.append("entry.839035328", college);  // College Entry ID
-            formData.append("entry.1117594115", location); // Location Entry ID
-            formData.append("entry.727771072", votes[0]); // Vote 1 Entry ID
-            formData.append("entry.64360297", votes[1]); // Vote 2 Entry ID
-            formData.append("entry.1639194016", votes[2]); // Vote 3 Entry ID
+            formData.append("entry.878333554", name);
+            formData.append("entry.556246234", mobile);
+            formData.append("entry.839035328", college); // College dropdown value
+            formData.append("entry.1117594115", location); // Location dropdown value
+            formData.append("entry.727771072", votes[0]);
+            formData.append("entry.64360297", votes[1]);
+            formData.append("entry.1639194016", votes[2]);
 
-            // Submit data to Google Forms
             fetch(googleFormURL, {
                 method: "POST",
                 mode: "no-cors",
@@ -855,7 +882,7 @@
             });
         }
 
-        // Add input validation on input events
+        // Add input validation on input events (updated for dropdowns)
         document.getElementById('name').addEventListener('input', function () {
             const namePattern = /^[A-Za-z\s]+$/;
             if (!namePattern.test(this.value.trim()) && this.value.trim() !== '') {
@@ -878,9 +905,9 @@
             }
         });
 
-        document.getElementById('college').addEventListener('input', function () {
-            const collegePattern = /^[A-Za-z0-9\s]+$/;
-            if (!collegePattern.test(this.value.trim()) && this.value.trim() !== '') {
+        // Add event listeners for dropdowns
+        document.getElementById('college').addEventListener('change', function () {
+            if (!this.value) {
                 this.classList.add('error');
                 document.getElementById('collegeError').style.display = 'block';
             } else {
@@ -889,9 +916,8 @@
             }
         });
 
-        document.getElementById('location').addEventListener('input', function () {
-            const locationPattern = /^[A-Za-z0-9\s]+$/;
-            if (!locationPattern.test(this.value.trim()) && this.value.trim() !== '') {
+        document.getElementById('location').addEventListener('change', function () {
+            if (!this.value) {
                 this.classList.add('error');
                 document.getElementById('locationError').style.display = 'block';
             } else {
@@ -899,6 +925,7 @@
                 document.getElementById('locationError').style.display = 'none';
             }
         });
+
     </script>
 </body>
 
